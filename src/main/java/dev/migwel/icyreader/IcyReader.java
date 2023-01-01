@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 public class IcyReader {
 
     private static final Logger log = LogManager.getLogger(IcyReader.class);
+    public static final int WAIT_PRE_ROLL = 10_000;
     private final IcyStreamRetriever streamRetriever;
 
     public IcyReader() {
@@ -44,14 +45,35 @@ public class IcyReader {
             log.info("Stream could not be retrieved");
             return null;
         }
-        int metadataOffset = getMetadataOffset(icyStream.icyMetaInt());
-        List<Metadata> metadata = extractMetadata(icyStream.stream(), metadataOffset);
+
+        List<Metadata> metadata = getMetaData(icyStream);
         try {
             icyStream.stream().close();
         } catch (IOException e) {
             log.warn("Could not close input stream", e);
         }
         return getSongInfo(metadata);
+    }
+
+    private List<Metadata> getMetaData(IcyStream icyStream) {
+        int metadataOffset = getMetadataOffset(icyStream.icyMetaInt());
+        List<Metadata> metadata;
+        long startMs = System.currentTimeMillis();
+        do {
+            try {
+                metadata = extractMetadata(icyStream.stream(), metadataOffset);
+            } catch (IOException e) {
+                log.warn("Could not get metadata", e);
+                return Collections.emptyList();
+            }
+        }
+        while (metadata.isEmpty() || (containsPreroll(metadata) && System.currentTimeMillis() - startMs <= WAIT_PRE_ROLL));
+
+        return metadata;
+    }
+
+    private boolean containsPreroll(List<Metadata> metadata) {
+        return metadata.stream().anyMatch(e -> "insertionType".equals(e.getKey()) && "preroll".equals(e.getValue()));
     }
 
     private int getMetadataOffset(String icyMetaInt) {
@@ -84,17 +106,16 @@ public class IcyReader {
         return new SongInfo(songInfoSplit[0], songInfoSplit[1]);
     }
 
+    //Returns an empty list when nothing has changed
     @Nonnull
-    private List<Metadata> extractMetadata(InputStream stream, int metadataOffset) {
-        String metadataStr;
-        try {
-            stream.skipNBytes(metadataOffset);
-            int metaDataLength = stream.read() * 16;
-            metadataStr = getMetadataStr(stream, metaDataLength);
-        } catch (IOException e) {
-            log.warn("An exception occurred while trying to get the metadata", e);
+    private List<Metadata> extractMetadata(InputStream stream, int metadataOffset) throws IOException {
+        stream.skipNBytes(metadataOffset);
+        int metaDataLength = stream.read() * 16;
+        if (metaDataLength == 0) {
+            //This means nothing has changed, ignore
             return Collections.emptyList();
         }
+        String metadataStr = getMetadataStr(stream, metaDataLength);
         return Arrays.stream(metadataStr.split(";"))
                 .map(e -> e.split("=", 2))
                 .filter(e -> e.length == 2)

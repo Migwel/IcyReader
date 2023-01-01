@@ -14,4 +14,11 @@ public class IcyManualReaderTest {
         assertNotNull(songInfo);
         System.out.println(songInfo);
     }
+
+    @Test
+    void readKEXPStream() {
+        SongInfo songInfo = reader.currentlyPlaying("https://kexp-mp3-128.streamguys1.com/kexp128.mp3");
+        assertNotNull(songInfo);
+        System.out.println(songInfo);
+    }
 }
