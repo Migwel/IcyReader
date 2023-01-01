@@ -33,6 +33,17 @@ public class IcyReader {
     }
 
     /**
+     * This method is a "shortcut" that can be used for known/supported Sources. This allows users to provide
+     * the source rather than have to look themselves for the stream url.
+     * @param sources The source from which the song info should be retrieved
+     * @return a SongInfo object containing the artist and song currently playing on the streamUrl
+     *         If this could not be retrieved, returns null
+     */
+    public SongInfo currentlyPlaying(Sources sources) {
+        return currentlyPlaying(sources.getUrl());
+    }
+
+    /**
      * This method can be used to fetch what song is currently playing on a Shoutcast/Icecast stream
      * @param streamUrl The Shoutcast/Icecast stream from which we want to retrieve the song info
      * @return a SongInfo object containing the artist and song currently playing on the streamUrl

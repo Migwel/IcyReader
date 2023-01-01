@@ -9,15 +9,36 @@ public class IcyManualReaderTest {
     private final IcyReader reader = new IcyReader();
 
     @Test
-    void readRadio2Stream() {
-        SongInfo songInfo = reader.currentlyPlaying("https://icecast.omroep.nl/radio2-bb-mp3");
+    void readNpoRadio1Stream() {
+        SongInfo songInfo = reader.currentlyPlaying(Sources.NPORADIO1);
+        assertNotNull(songInfo);
+        System.out.println(songInfo);
+    }
+
+    @Test
+    void readNpoRadio2Stream() {
+        SongInfo songInfo = reader.currentlyPlaying(Sources.NPORADIO2);
+        assertNotNull(songInfo);
+        System.out.println(songInfo);
+    }
+
+    @Test
+    void readNpoRadio5Stream() {
+        SongInfo songInfo = reader.currentlyPlaying(Sources.NPORADIO5);
         assertNotNull(songInfo);
         System.out.println(songInfo);
     }
 
     @Test
     void readKEXPStream() {
-        SongInfo songInfo = reader.currentlyPlaying("https://kexp-mp3-128.streamguys1.com/kexp128.mp3");
+        SongInfo songInfo = reader.currentlyPlaying(Sources.KEXP);
+        assertNotNull(songInfo);
+        System.out.println(songInfo);
+    }
+
+    @Test
+    void readRadio538Stream() {
+        SongInfo songInfo = reader.currentlyPlaying(Sources.RADIO538);
         assertNotNull(songInfo);
         System.out.println(songInfo);
     }
