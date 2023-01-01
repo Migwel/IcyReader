@@ -42,4 +42,11 @@ public class IcyManualReaderTest {
         assertNotNull(songInfo);
         System.out.println(songInfo);
     }
+
+    @Test
+    void readMaximumStream() {
+        SongInfo songInfo = reader.currentlyPlaying(Sources.MAXIMUMFM);
+        assertNotNull(songInfo);
+        System.out.println(songInfo);
+    }
 }

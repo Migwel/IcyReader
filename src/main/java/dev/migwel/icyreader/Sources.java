@@ -2,6 +2,9 @@ package dev.migwel.icyreader;
 
 public enum Sources {
 
+    //BE
+    MAXIMUMFM("https://n01a-eu.rcs.revma.com/vnmbzemrmm0uv"),
+
     //NL
     NPORADIO1("https://icecast.omroep.nl/radio1-bb-mp3"),
     NPORADIO2("https://icecast.omroep.nl/radio2-bb-mp3"),
