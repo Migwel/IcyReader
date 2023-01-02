@@ -51,28 +51,28 @@ public class IcyReader {
      */
     @CheckForNull
     public SongInfo currentlyPlaying(String streamUrl) {
-        IcyStream icyStream = streamRetriever.retrieve(streamUrl);
-        if (icyStream == null) {
-            log.info("Stream could not be retrieved");
-            return null;
-        }
+        List<Metadata> metadata;
+        try (IcyStream icyStream = streamRetriever.retrieve(streamUrl)) {
+            if (icyStream == null) {
+                log.info("Stream could not be retrieved");
+                return null;
+            }
 
-        List<Metadata> metadata = getMetaData(icyStream);
-        try {
-            icyStream.stream().close();
+            metadata = getMetaData(icyStream);
         } catch (IOException e) {
             log.warn("Could not close input stream", e);
+            return null;
         }
         return getSongInfo(metadata);
     }
 
     private List<Metadata> getMetaData(IcyStream icyStream) {
-        int metadataOffset = getMetadataOffset(icyStream.icyMetaInt());
+        int metadataOffset = getMetadataOffset(icyStream.getIcyMetaInt());
         List<Metadata> metadata;
         long startMs = System.currentTimeMillis();
         do {
             try {
-                metadata = extractMetadata(icyStream.stream(), metadataOffset);
+                metadata = extractMetadata(icyStream.getStream(), metadataOffset);
             } catch (IOException e) {
                 log.warn("Could not get metadata", e);
                 return Collections.emptyList();

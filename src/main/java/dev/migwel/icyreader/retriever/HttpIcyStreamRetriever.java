@@ -5,6 +5,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -17,7 +18,7 @@ public class HttpIcyStreamRetriever implements IcyStreamRetriever {
 
     private static final Logger log = LogManager.getLogger(HttpIcyStreamRetriever.class);
 
-    private final HttpClient httpClient;
+    private final CloseableHttpClient httpClient;
 
     public HttpIcyStreamRetriever() {
         this(HttpClients.custom()
@@ -37,13 +38,13 @@ public class HttpIcyStreamRetriever implements IcyStreamRetriever {
         httpGet.addHeader("Connection", "close");
         httpGet.addHeader("Accept", "");
         try {
-            HttpResponse response = httpClient.execute(httpGet);
+            CloseableHttpResponse response = httpClient.execute(httpGet);
             if (response.getStatusLine().getStatusCode() != 200) {
                 log.warn("Could not fetch stream. Status line: " + response.getStatusLine());
                 return null;
             }
             String icyMetaInt = retrieveIcyMetaInt(response);
-            return new IcyStream(response.getEntity().getContent(), icyMetaInt);
+            return new HttpIcyStream(response.getEntity().getContent(), icyMetaInt, response);
         } catch (IOException e) {
             log.warn("An exception occurred while fetching the stream", e);
             return null;
