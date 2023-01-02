@@ -2,10 +2,10 @@ package dev.migwel.icyreader.parser;
 
 import dev.migwel.icyreader.SongInfo;
 
-import javax.annotation.CheckForNull;
+import javax.annotation.Nonnull;
 
 public interface IcyStreamTitleParser {
 
-    @CheckForNull
+    @Nonnull
     SongInfo parse(String streamTitle);
 }
