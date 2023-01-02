@@ -6,46 +6,74 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class IcyManualReaderTest {
 
-    private final IcyReader reader = new IcyReader();
-
     @Test
     void readNpoRadio1Stream() {
-        SongInfo songInfo = reader.currentlyPlaying(Sources.NPORADIO1);
+        IcyReader reader = new IcyReader.IcyReaderBuilder().withSources(Sources.NPORADIO1).build();
+        SongInfo songInfo = reader.currentlyPlaying();
         assertNotNull(songInfo);
         System.out.println(songInfo);
     }
 
     @Test
     void readNpoRadio2Stream() {
-        SongInfo songInfo = reader.currentlyPlaying(Sources.NPORADIO2);
+        IcyReader reader = new IcyReader.IcyReaderBuilder().withSources(Sources.NPORADIO2).build();
+        SongInfo songInfo = reader.currentlyPlaying();
         assertNotNull(songInfo);
         System.out.println(songInfo);
     }
 
     @Test
     void readNpoRadio5Stream() {
-        SongInfo songInfo = reader.currentlyPlaying(Sources.NPORADIO5);
+        IcyReader reader = new IcyReader.IcyReaderBuilder().withSources(Sources.NPORADIO5).build();
+        SongInfo songInfo = reader.currentlyPlaying();
         assertNotNull(songInfo);
         System.out.println(songInfo);
     }
 
     @Test
     void readKEXPStream() {
-        SongInfo songInfo = reader.currentlyPlaying(Sources.KEXP);
+        IcyReader reader = new IcyReader.IcyReaderBuilder().withSources(Sources.KEXP).build();
+        SongInfo songInfo = reader.currentlyPlaying();
         assertNotNull(songInfo);
         System.out.println(songInfo);
     }
 
     @Test
     void readRadio538Stream() {
-        SongInfo songInfo = reader.currentlyPlaying(Sources.RADIO538);
+        IcyReader reader = new IcyReader.IcyReaderBuilder().withSources(Sources.RADIO538).build();
+        SongInfo songInfo = reader.currentlyPlaying();
+        assertNotNull(songInfo);
+        System.out.println(songInfo);
+    }
+
+    @Test
+    void readQMusicStream() {
+        IcyReader reader = new IcyReader.IcyReaderBuilder().withSources(Sources.QMUSIC).build();
+        SongInfo songInfo = reader.currentlyPlaying();
+        assertNotNull(songInfo);
+        System.out.println(songInfo);
+    }
+
+    @Test
+    void readSkyRadioStream() {
+        IcyReader reader = new IcyReader.IcyReaderBuilder().withSources(Sources.SKYRADIO).build();
+        SongInfo songInfo = reader.currentlyPlaying();
+        assertNotNull(songInfo);
+        System.out.println(songInfo);
+    }
+
+    @Test
+    void read100procentNLStream() {
+        IcyReader reader = new IcyReader.IcyReaderBuilder().withSources(Sources.HONDERDPROCENTNL).build();
+        SongInfo songInfo = reader.currentlyPlaying();
         assertNotNull(songInfo);
         System.out.println(songInfo);
     }
 
     @Test
     void readMaximumStream() {
-        SongInfo songInfo = reader.currentlyPlaying(Sources.MAXIMUMFM);
+        IcyReader reader = new IcyReader.IcyReaderBuilder().withSources(Sources.MAXIMUMFM).build();
+        SongInfo songInfo = reader.currentlyPlaying();
         assertNotNull(songInfo);
         System.out.println(songInfo);
     }

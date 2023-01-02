@@ -1,5 +1,7 @@
 package dev.migwel.icyreader;
 
+import dev.migwel.icyreader.parser.StreamTitleArtistFirstParser;
+import dev.migwel.icyreader.parser.IcyStreamTitleParser;
 import dev.migwel.icyreader.retriever.HttpIcyStreamRetriever;
 import dev.migwel.icyreader.retriever.IcyStream;
 import dev.migwel.icyreader.retriever.IcyStreamRetriever;
@@ -23,34 +25,22 @@ public class IcyReader {
     private static final Logger log = LogManager.getLogger(IcyReader.class);
     public static final int WAIT_PRE_ROLL = 10_000;
     private final IcyStreamRetriever streamRetriever;
+    private final IcyStreamTitleParser streamTitleParser;
+    private final String streamUrl;
 
-    public IcyReader() {
-        this(new HttpIcyStreamRetriever());
-    }
-
-    public IcyReader(IcyStreamRetriever streamRetriever) {
+    public IcyReader(IcyStreamRetriever streamRetriever, IcyStreamTitleParser streamTitleParser, String streamUrl) {
         this.streamRetriever = streamRetriever;
-    }
-
-    /**
-     * This method is a "shortcut" that can be used for known/supported Sources. This allows users to provide
-     * the source rather than have to look themselves for the stream url.
-     * @param sources The source from which the song info should be retrieved
-     * @return a SongInfo object containing the artist and song currently playing on the streamUrl
-     *         If this could not be retrieved, returns null
-     */
-    public SongInfo currentlyPlaying(Sources sources) {
-        return currentlyPlaying(sources.getUrl());
+        this.streamTitleParser = streamTitleParser;
+        this.streamUrl = streamUrl;
     }
 
     /**
      * This method can be used to fetch what song is currently playing on a Shoutcast/Icecast stream
-     * @param streamUrl The Shoutcast/Icecast stream from which we want to retrieve the song info
      * @return a SongInfo object containing the artist and song currently playing on the streamUrl
      *         If this could not be retrieved, returns null
      */
     @CheckForNull
-    public SongInfo currentlyPlaying(String streamUrl) {
+    public SongInfo currentlyPlaying() {
         List<Metadata> metadata;
         try (IcyStream icyStream = streamRetriever.retrieve(streamUrl)) {
             if (icyStream == null) {
@@ -78,7 +68,7 @@ public class IcyReader {
                 return Collections.emptyList();
             }
         }
-        while (metadata.isEmpty() || (containsPreroll(metadata) && System.currentTimeMillis() - startMs <= WAIT_PRE_ROLL));
+        while ((metadata.isEmpty() || containsPreroll(metadata)) && System.currentTimeMillis() - startMs <= WAIT_PRE_ROLL);
 
         return metadata;
     }
@@ -103,18 +93,7 @@ public class IcyReader {
         if (streamTitle == null) {
             return null;
         }
-        return getSongInfo(streamTitle);
-    }
-
-    @CheckForNull
-    private SongInfo getSongInfo(Metadata streamTitle) {
-        String streamTitleValue = streamTitle.getValue();
-        String[] songInfoSplit = streamTitleValue.split(" - ");
-        if (songInfoSplit.length < 2) {
-            log.info("Wrong size ("+ songInfoSplit.length +") for StreamTitle metadata: "+ streamTitleValue);
-            return null;
-        }
-        return new SongInfo(songInfoSplit[0], songInfoSplit[1]);
+        return streamTitleParser.parse(streamTitle.getValue());
     }
 
     //Returns an empty list when nothing has changed
@@ -141,5 +120,45 @@ public class IcyReader {
             throw new IOException("Could not read "+ metaDataLength +" bytes from stream");
         }
         return new String(b, StandardCharsets.UTF_8);
+    }
+
+    @ParametersAreNonnullByDefault
+    public static class IcyReaderBuilder {
+
+        private IcyStreamRetriever streamRetriever;
+        private IcyStreamTitleParser icyStreamTitleParser;
+        private String streamUrl;
+
+        public IcyReaderBuilder withRetriever(IcyStreamRetriever streamRetriever) {
+            this.streamRetriever = streamRetriever;
+            return this;
+        }
+
+        public IcyReaderBuilder withIcyStreamTitleParser(IcyStreamTitleParser icyStreamTitleParser) {
+            this.icyStreamTitleParser = icyStreamTitleParser;
+            return this;
+        }
+
+        public IcyReaderBuilder withSources(Sources sources) {
+            this.streamUrl = sources.getUrl();
+            this.icyStreamTitleParser = sources.getStreamTitleParser();
+            return this;
+        }
+
+        public IcyReaderBuilder withStreamUrl(String streamUrl) {
+            this.streamUrl = streamUrl;
+            return this;
+        }
+
+        public IcyReader build() {
+            if (streamRetriever == null) {
+                streamRetriever = new HttpIcyStreamRetriever();
+            }
+            if (icyStreamTitleParser == null) {
+                icyStreamTitleParser = new StreamTitleArtistFirstParser();
+            }
+            return new IcyReader(streamRetriever, icyStreamTitleParser, streamUrl);
+        }
+
     }
 }

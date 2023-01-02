@@ -13,8 +13,11 @@ public class IcyReaderTest {
 
     @Test
     void readValidStream() {
-        IcyReader reader = new IcyReader(new TestIcyStreamRetriever(16000));
-        SongInfo songInfo = reader.currentlyPlaying("valid");
+        IcyReader reader = new IcyReader.IcyReaderBuilder()
+                .withStreamUrl("valid")
+                .withRetriever(new TestIcyStreamRetriever(16000))
+                .build();
+        SongInfo songInfo = reader.currentlyPlaying();
         assertNotNull(songInfo);
         assertEquals("TITIYO", songInfo.artist());
         assertEquals("COME ALONG", songInfo.title());
@@ -22,8 +25,11 @@ public class IcyReaderTest {
 
     @Test
     void readValidStreamWithPreRoll() {
-        IcyReader reader = new IcyReader(new TestIcyStreamRetriever(4096));
-        SongInfo songInfo = reader.currentlyPlaying("valid_with_preroll");
+        IcyReader reader = new IcyReader.IcyReaderBuilder()
+                .withStreamUrl("valid_with_preroll")
+                .withRetriever(new TestIcyStreamRetriever(4096))
+                .build();
+        SongInfo songInfo = reader.currentlyPlaying();
         assertNotNull(songInfo);
         assertEquals("Aretha Franklin", songInfo.artist());
         assertEquals("A Brand New Me", songInfo.title());
@@ -31,8 +37,11 @@ public class IcyReaderTest {
 
     @Test
     void readInvalidStream() {
-        IcyReader reader = new IcyReader(new TestIcyStreamRetriever(16000));
-        SongInfo songInfo = reader.currentlyPlaying("invalid");
+        IcyReader reader = new IcyReader.IcyReaderBuilder()
+                .withStreamUrl("invalid")
+                .withRetriever(new TestIcyStreamRetriever(16000))
+                .build();
+        SongInfo songInfo = reader.currentlyPlaying();
         assertNull(songInfo);
     }
 }
