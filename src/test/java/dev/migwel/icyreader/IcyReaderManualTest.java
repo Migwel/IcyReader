@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class IcyManualReaderTest {
+public class IcyReaderManualTest {
 
     @Test
     void readNpoRadio1Stream() {
