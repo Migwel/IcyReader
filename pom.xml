@@ -8,6 +8,28 @@
     <artifactId>IcyReader</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <name>IcyReader</name>
+    <description>Library that reads what's playing in a Shoutcast/Icecast stream</description>
+    <url>https://github.com/Migwel/IcyReader</url>
+
+    <developers>
+        <developer>
+            <name>Miguel González</name>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>The MIT License (MIT)</name>
+            <url>http://opensource.org/licenses/MIT</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>https://github.com/Migwel/IcyReader</url>
+    </scm>
+
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
@@ -87,7 +109,7 @@
                 <executions>
                     <execution>
                         <id>attach-sources</id>
-                        <phase>verify</phase>
+                        <phase>package</phase>
                         <goals>
                             <goal>jar-no-fork</goal>
                         </goals>
@@ -105,7 +127,7 @@
                 <executions>
                     <execution>
                         <id>attach-javadocs</id>
-                        <phase>verify</phase>
+                        <phase>package</phase>
                         <goals>
                             <goal>jar</goal>
                         </goals>
