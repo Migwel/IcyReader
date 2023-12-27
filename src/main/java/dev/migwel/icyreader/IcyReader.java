@@ -127,7 +127,16 @@ public class IcyReader {
 
         private IcyStreamRetriever streamRetriever;
         private IcyStreamTitleParser icyStreamTitleParser;
-        private String streamUrl;
+        private final String streamUrl;
+
+        public IcyReaderBuilder(String streamUrl) {
+            this.streamUrl = streamUrl;
+        }
+
+        public IcyReaderBuilder(Sources sources) {
+            this.streamUrl = sources.getUrl();
+            this.icyStreamTitleParser = sources.getStreamTitleParser();
+        }
 
         public IcyReaderBuilder withRetriever(IcyStreamRetriever streamRetriever) {
             this.streamRetriever = streamRetriever;
@@ -136,17 +145,6 @@ public class IcyReader {
 
         public IcyReaderBuilder withIcyStreamTitleParser(IcyStreamTitleParser icyStreamTitleParser) {
             this.icyStreamTitleParser = icyStreamTitleParser;
-            return this;
-        }
-
-        public IcyReaderBuilder withSources(Sources sources) {
-            this.streamUrl = sources.getUrl();
-            this.icyStreamTitleParser = sources.getStreamTitleParser();
-            return this;
-        }
-
-        public IcyReaderBuilder withStreamUrl(String streamUrl) {
-            this.streamUrl = streamUrl;
             return this;
         }
 

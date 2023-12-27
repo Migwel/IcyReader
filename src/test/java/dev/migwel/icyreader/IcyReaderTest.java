@@ -13,8 +13,7 @@ public class IcyReaderTest {
 
     @Test
     void readValidStream() {
-        IcyReader reader = new IcyReader.IcyReaderBuilder()
-                .withStreamUrl("valid")
+        IcyReader reader = new IcyReader.IcyReaderBuilder("valid")
                 .withRetriever(new TestIcyStreamRetriever(16000))
                 .build();
         SongInfo songInfo = reader.currentlyPlaying();
@@ -25,8 +24,7 @@ public class IcyReaderTest {
 
     @Test
     void readValidStreamWithPreRoll() {
-        IcyReader reader = new IcyReader.IcyReaderBuilder()
-                .withStreamUrl("valid_with_preroll")
+        IcyReader reader = new IcyReader.IcyReaderBuilder("valid_with_preroll")
                 .withRetriever(new TestIcyStreamRetriever(4096))
                 .build();
         SongInfo songInfo = reader.currentlyPlaying();
@@ -37,8 +35,7 @@ public class IcyReaderTest {
 
     @Test
     void readInvalidStream() {
-        IcyReader reader = new IcyReader.IcyReaderBuilder()
-                .withStreamUrl("invalid")
+        IcyReader reader = new IcyReader.IcyReaderBuilder("invalid")
                 .withRetriever(new TestIcyStreamRetriever(16000))
                 .build();
         SongInfo songInfo = reader.currentlyPlaying();

@@ -8,7 +8,7 @@ public class IcyReaderManualTest {
 
     @Test
     void readNpoRadio1Stream() {
-        IcyReader reader = new IcyReader.IcyReaderBuilder().withSources(Sources.NPORADIO1).build();
+        IcyReader reader = new IcyReader.IcyReaderBuilder(Sources.NPORADIO1).build();
         SongInfo songInfo = reader.currentlyPlaying();
         assertNotNull(songInfo);
         System.out.println(songInfo);
@@ -16,7 +16,7 @@ public class IcyReaderManualTest {
 
     @Test
     void readNpoRadio2Stream() {
-        IcyReader reader = new IcyReader.IcyReaderBuilder().withSources(Sources.NPORADIO2).build();
+        IcyReader reader = new IcyReader.IcyReaderBuilder(Sources.NPORADIO2).build();
         SongInfo songInfo = reader.currentlyPlaying();
         assertNotNull(songInfo);
         System.out.println(songInfo);
@@ -24,7 +24,7 @@ public class IcyReaderManualTest {
 
     @Test
     void readNpoRadio5Stream() {
-        IcyReader reader = new IcyReader.IcyReaderBuilder().withSources(Sources.NPORADIO5).build();
+        IcyReader reader = new IcyReader.IcyReaderBuilder(Sources.NPORADIO5).build();
         SongInfo songInfo = reader.currentlyPlaying();
         assertNotNull(songInfo);
         System.out.println(songInfo);
@@ -32,7 +32,7 @@ public class IcyReaderManualTest {
 
     @Test
     void readKEXPStream() {
-        IcyReader reader = new IcyReader.IcyReaderBuilder().withSources(Sources.KEXP).build();
+        IcyReader reader = new IcyReader.IcyReaderBuilder(Sources.KEXP).build();
         SongInfo songInfo = reader.currentlyPlaying();
         assertNotNull(songInfo);
         System.out.println(songInfo);
@@ -40,7 +40,7 @@ public class IcyReaderManualTest {
 
     @Test
     void readRadio538Stream() {
-        IcyReader reader = new IcyReader.IcyReaderBuilder().withSources(Sources.RADIO538).build();
+        IcyReader reader = new IcyReader.IcyReaderBuilder(Sources.RADIO538).build();
         SongInfo songInfo = reader.currentlyPlaying();
         assertNotNull(songInfo);
         System.out.println(songInfo);
@@ -48,7 +48,7 @@ public class IcyReaderManualTest {
 
     @Test
     void readQMusicStream() {
-        IcyReader reader = new IcyReader.IcyReaderBuilder().withSources(Sources.QMUSIC).build();
+        IcyReader reader = new IcyReader.IcyReaderBuilder(Sources.QMUSIC).build();
         SongInfo songInfo = reader.currentlyPlaying();
         assertNotNull(songInfo);
         System.out.println(songInfo);
@@ -56,7 +56,7 @@ public class IcyReaderManualTest {
 
     @Test
     void readSkyRadioStream() {
-        IcyReader reader = new IcyReader.IcyReaderBuilder().withSources(Sources.SKYRADIO).build();
+        IcyReader reader = new IcyReader.IcyReaderBuilder(Sources.SKYRADIO).build();
         SongInfo songInfo = reader.currentlyPlaying();
         assertNotNull(songInfo);
         System.out.println(songInfo);
@@ -64,7 +64,7 @@ public class IcyReaderManualTest {
 
     @Test
     void read100procentNLStream() {
-        IcyReader reader = new IcyReader.IcyReaderBuilder().withSources(Sources.HONDERDPROCENTNL).build();
+        IcyReader reader = new IcyReader.IcyReaderBuilder(Sources.HONDERDPROCENTNL).build();
         SongInfo songInfo = reader.currentlyPlaying();
         assertNotNull(songInfo);
         System.out.println(songInfo);
@@ -72,7 +72,7 @@ public class IcyReaderManualTest {
 
     @Test
     void readMaximumStream() {
-        IcyReader reader = new IcyReader.IcyReaderBuilder().withSources(Sources.MAXIMUMFM).build();
+        IcyReader reader = new IcyReader.IcyReaderBuilder(Sources.MAXIMUMFM).build();
         SongInfo songInfo = reader.currentlyPlaying();
         assertNotNull(songInfo);
         System.out.println(songInfo);
