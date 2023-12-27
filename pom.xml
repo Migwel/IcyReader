@@ -6,7 +6,7 @@
 
     <groupId>dev.migwel.icyreader</groupId>
     <artifactId>IcyReader</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0-RELEASE</version>
 
     <name>IcyReader</name>
     <description>Library that reads what's playing in a Shoutcast/Icecast stream</description>
