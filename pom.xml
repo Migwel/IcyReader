@@ -6,7 +6,7 @@
 
     <groupId>dev.migwel.icyreader</groupId>
     <artifactId>IcyReader</artifactId>
-    <version>1.0-RELEASE</version>
+    <version>1.1-RELEASE</version>
 
     <name>IcyReader</name>
     <description>Library that reads what's playing in a Shoutcast/Icecast stream</description>
@@ -59,9 +59,9 @@
             <version>2.19.0</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.5.14</version>
+            <groupId>org.apache.httpcomponents.client5</groupId>
+            <artifactId>httpclient5</artifactId>
+            <version>5.3</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -71,8 +71,8 @@
         </dependency>
         <dependency>
             <groupId>com.google.code.findbugs</groupId>
-            <artifactId>findbugs</artifactId>
-            <version>3.0.1</version>
+            <artifactId>jsr305</artifactId>
+            <version>3.0.2</version>
         </dependency>
     </dependencies>
 

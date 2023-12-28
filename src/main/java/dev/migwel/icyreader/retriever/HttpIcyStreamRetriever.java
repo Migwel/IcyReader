@@ -1,14 +1,13 @@
 package dev.migwel.icyreader.retriever;
 
-import org.apache.http.Header;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.config.CookieSpecs;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
+import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.client5.http.config.RequestConfig;
+import org.apache.hc.client5.http.cookie.StandardCookieSpec;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.core5.http.ClassicHttpResponse;
+import org.apache.hc.core5.http.Header;
+import org.apache.hc.core5.http.HttpResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -23,7 +22,7 @@ public class HttpIcyStreamRetriever implements IcyStreamRetriever {
     public HttpIcyStreamRetriever() {
         this(HttpClients.custom()
                 .setDefaultRequestConfig(RequestConfig.custom()
-                        .setCookieSpec(CookieSpecs.STANDARD).build())
+                        .setCookieSpec(StandardCookieSpec.RELAXED).build())
                 .build());
     }
 
@@ -38,9 +37,9 @@ public class HttpIcyStreamRetriever implements IcyStreamRetriever {
         httpGet.addHeader("Connection", "close");
         httpGet.addHeader("Accept", "");
         try {
-            CloseableHttpResponse response = httpClient.execute(httpGet);
-            if (response.getStatusLine().getStatusCode() != 200) {
-                log.warn("Could not fetch stream. Status line: " + response.getStatusLine());
+            ClassicHttpResponse response = httpClient.execute(httpGet);
+            if (response.getCode() != 200) {
+                log.warn("Could not fetch stream. Status line: " + response.getCode());
                 return null;
             }
             String icyMetaInt = retrieveIcyMetaInt(response);
